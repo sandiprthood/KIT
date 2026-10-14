@@ -3,1126 +3,534 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AgriConnect – Smart Farming & Produce Marketplace</title>
-
+<title>AGRICONNECT – Smart Ecosystem</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
 tailwind.config = {
     theme: {
         extend: {
             colors: {
-                farm: {
-                    dark: "#12351b",
-                    mid: "#2d6a35",
-                    light: "#4f9d4a",
-                    pale: "#edf8ea",
-                    accent: "#f4a623"
+                agri: {
+                    dark: "#0a1f12",
+                    card: "#12281a",
+                    cardhover: "#183623",
+                    green: "#2d6a35",
+                    accent: "#f4a623",
+                    lightbg: "#08160e"
                 }
             }
         }
     }
 }
 </script>
-
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html, body {
-    width: 100%;
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
-    background: #edf8ea;
-}
-
-/* SCREEN MANAGEMENT */
-.screen {
-    display: none;
-    width: 100%;
-    min-height: 100vh;
-}
-
-.screen.active {
-    display: flex;
-    flex-direction: column;
-}
-
-/* LANDING SCREEN NO-SCROLL FIX */
-#screen-landing {
-    height: 100vh;
-    max-height: 100vh;
-    overflow: hidden;
-}
-
-.hero-screen {
-    height: 100vh;
-    background: linear-gradient(135deg, rgba(18,53,27,0.98), rgba(45,106,53,0.95), rgba(79,157,74,0.90));
-    position: relative;
-    overflow: hidden;
-}
-
-.hero-screen::before {
-    content: "";
-    position: absolute;
-    width: 450px;
-    height: 450px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 50%;
-    top: -150px;
-    right: -100px;
-}
-
-.hero-screen::after {
-    content: "";
-    position: absolute;
-    width: 400px;
-    height: 400px;
-    background: rgba(244,166,35,0.08);
-    border-radius: 50%;
-    bottom: -150px;
-    left: -100px;
-}
-
-/* CARDS & UI COMPONENTS */
-.card {
-    background: white;
-    border-radius: 18px;
-    padding: 20px;
-    box-shadow: 0 5px 20px rgba(0,0,0,.06);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 25px rgba(0,0,0,.12);
-}
-
-.btn-primary {
-    background: #4f9d4a;
-    color: white;
-    padding: 12px 22px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.2s ease;
-}
-
-.btn-primary:hover {
-    background: #2d6a35;
-}
-
-.btn-orange {
-    background: #f4a623;
-    color: #12351b;
-    padding: 12px 22px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.2s ease;
-}
-
-.btn-orange:hover {
-    background: #df9214;
-}
-
-.section-header {
-    background: linear-gradient(135deg, #12351b, #2d6a35);
-    color: white;
-    padding: 20px;
-    border-radius: 16px;
-    margin-bottom: 20px;
-}
-
-/* CHATBOT */
-.chat-button {
-    position: fixed;
-    right: 25px;
-    bottom: 25px;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: none;
-    background: #4f9d4a;
-    color: white;
-    font-size: 26px;
-    cursor: pointer;
-    box-shadow: 0 8px 25px rgba(0,0,0,.25);
-    z-index: 9999;
-}
-
-.chat-window {
-    position: fixed;
-    right: 25px;
-    bottom: 95px;
-    width: 350px;
-    max-width: calc(100vw - 30px);
-    height: 480px;
-    background: white;
-    border-radius: 18px;
-    box-shadow: 0 15px 40px rgba(0,0,0,.25);
-    display: none;
-    flex-direction: column;
-    overflow: hidden;
-    z-index: 9999;
-}
-
-.chat-window.open {
-    display: flex;
-}
-
-.chat-messages {
-    flex: 1;
-    padding: 15px;
-    overflow-y: auto;
-    background: #f6faf5;
-}
-
-.bot-message, .user-message {
-    max-width: 85%;
-    padding: 10px 13px;
-    border-radius: 12px;
-    margin-bottom: 10px;
-    font-size: 14px;
-}
-
-.bot-message { background: #e5f4df; color: #12351b; }
-.user-message { background: #4f9d4a; color: white; margin-left: auto; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, -apple-system, sans-serif; background: #08160e; color: #ffffff; min-height: 100vh; overflow-x: hidden; }
+.screen { display: none; width: 100%; min-height: 100vh; flex-direction: column; }
+.screen.active { display: flex; }
+#screen-landing { height: 100vh; max-height: 100vh; overflow: hidden; }
+.card-custom { background: #12281a; border: 1px solid rgba(79, 157, 74, 0.2); border-radius: 20px; transition: 0.3s ease; }
+.card-custom:hover { background: #183623; border-color: rgba(79, 157, 74, 0.5); transform: translateY(-3px); }
+.btn-orange { background: #f4a623; color: #0a1f12; font-weight: bold; border-radius: 12px; padding: 12px 24px; transition: 0.2s; cursor: pointer; border: none; }
+.btn-orange:hover { background: #df9214; }
+.btn-green { background: #2d6a35; color: #ffffff; font-weight: bold; border-radius: 12px; padding: 12px 24px; transition: 0.2s; cursor: pointer; border: none; }
+.btn-green:hover { background: #235229; }
 </style>
 </head>
-
 <body>
 
-<!-- ================= 1. LANDING SCREEN (NO SCROLL ON LAPTOP) ================= -->
-<section id="screen-landing" class="screen active">
-    <div class="hero-screen flex items-center justify-center text-center text-white px-6 py-4">
-        <div class="relative z-10 max-w-3xl flex flex-col items-center justify-center my-auto">
+<!-- ================= TOP NAVBAR ================= -->
+<header class="w-full bg-[#0a1f12] border-b border-green-900/50 px-6 py-4 flex justify-between items-center z-50">
+    <div class="flex items-center gap-3 cursor-pointer" onclick="goToScreen('landing')">
+        <div class="text-2xl">🌾</div>
+        <div>
+            <h1 class="font-extrabold text-lg tracking-wider text-white">AGRICONNECT</h1>
+            <span class="text-[10px] bg-green-900 text-green-300 px-2 py-0.5 rounded-full font-semibold" data-en="SMART ECOSYSTEM" data-mr="स्मार्ट इकोसिस्टम">SMART ECOSYSTEM</span>
+        </div>
+    </div>
+
+    <div class="flex items-center gap-4">
+        <button onclick="toggleLanguage()" class="bg-green-900/60 border border-green-700 text-green-200 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 hover:bg-green-800">
+            🌐 <span id="lang-label">मराठी / English</span>
+        </button>
+        <button onclick="goToScreen('farmer-dashboard')" class="bg-[#12281a] border border-green-800 text-green-300 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-green-900 flex items-center gap-2">
+            👨‍🌾 <span data-en="Farmer Portal" data-mr="शेतकरी पोर्टल">Farmer Portal</span>
+        </button>
+        <button onclick="goToScreen('buyer-dashboard')" class="btn-orange text-sm px-4 py-2 flex items-center gap-2">
+            🛒 <span data-en="Buyer Store" data-mr="खरेदीदार स्टोअर">Buyer Store</span>
+        </button>
+    </div>
+</header>
+
+<!-- ================= 1. LANDING SCREEN (NO SCROLL) ================= -->
+<section id="screen-landing" class="screen active relative flex items-center justify-center px-4 bg-gradient-to-br from-[#0a1f12] via-[#12281a] to-[#08160e]">
+    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#4f9d4a_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+
+    <div class="max-w-5xl mx-auto text-center z-10 flex flex-col items-center my-auto">
+        
+        <div class="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 text-amber-400 px-4 py-1.5 rounded-full text-xs font-semibold mb-6">
+            ⚡ <span data-en="Direct Farm-to-Fork Smart Network" data-mr="थेट थेट शेतकरी ते ग्राहक स्मार्ट नेटवर्क">Direct Farm-to-Fork Smart Network</span>
+        </div>
+
+        <h2 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight text-white max-w-4xl">
+            <span data-en="Empowering Agriculture with Direct Trade & AI Intelligence" data-mr="थेट व्यापार आणि कृत्रिम बुद्धिमत्तेसह शेतीचे सक्षमीकरण">Empowering Agriculture with Direct Trade & AI Intelligence</span>
+        </h2>
+
+        <p class="text-gray-300 text-sm md:text-base mt-4 max-w-2xl leading-relaxed" data-en="Eliminate middlemen markup, calculate precision farm profitability, get AI-driven crop advisory, and order guaranteed fresh harvest directly from verified local farmers." data-mr="दलालांचा नफा टाळा, शेतीचा नफा मोजा, AI पिकांचा सल्ला मिळवा आणि थेट स्थानिक शेतकऱ्यांकडून ताजे उत्पादन मागवा.">
+            Eliminate middlemen markup, calculate precision farm profitability, get AI-driven crop advisory, and order guaranteed fresh harvest directly from verified local farmers.
+        </p>
+
+        <!-- TWO SPLIT CARDS (FARMER & BUYER) -->
+        <div class="grid md:grid-cols-2 gap-6 w-full max-w-4xl mt-8 text-left">
             
-            <div class="text-5xl md:text-6xl mb-3">🌾</div>
-
-            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-none">
-                AGRICONNECT
-            </h1>
-
-            <p class="text-lg md:text-2xl mt-3 text-green-200 font-medium">
-                Direct Farmer & Buyer Platform
-            </p>
-
-            <p class="max-w-xl text-xs md:text-sm mt-3 text-gray-200 opacity-90 leading-relaxed">
-                Choose your role to get started: farmers can list produce, manage fields, and update social profiles; buyers can find local goods instantly.
-            </p>
-
-            <div class="flex flex-wrap justify-center gap-6 mt-8">
-                <button onclick="goToScreen('farmer-onboarding')" class="btn-orange text-base md:text-lg px-8 py-3 shadow-lg hover:scale-105 flex items-center gap-2">
-                    👨‍🌾 I am a Farmer
-                </button>
-                <button onclick="goToScreen('buyer-onboarding')" class="btn-primary bg-white !text-farm-dark text-base md:text-lg px-8 py-3 shadow-lg hover:scale-105 flex items-center gap-2">
-                    🛒 I am a Buyer
-                </button>
+            <!-- FARMER CARD -->
+            <div onclick="goToScreen('farmer-dashboard')" class="card-custom p-6 cursor-pointer flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 bg-green-900/60 rounded-xl flex items-center justify-center text-2xl mb-4 border border-green-700">👨‍🌾</div>
+                    <h3 class="text-2xl font-bold text-white" data-en="Farmer Hub" data-mr="शेतकरी हब">Farmer Hub</h3>
+                    <p class="text-xs text-gray-300 mt-2 leading-relaxed" data-en="List produce for direct market sale, compute crop ROI, check climate advisory & chat with AI Smart Agri Assistant." data-mr="थेट विक्रीसाठी पिके जोडा, नफा मोजा, हवामान तपासा आणि AI स्मार्ट शेती सहाय्यकाशी गप्पा मारा.">
+                        List produce for direct market sale, compute crop ROI, check climate advisory & chat with AI Smart Agri Assistant.
+                    </p>
+                </div>
+                <div class="mt-6 flex items-center text-amber-400 text-sm font-bold gap-2">
+                    <span data-en="Launch Farmer Tools" data-mr="शेतकरी साधने उघडा">Launch Farmer Tools</span> →
+                </div>
             </div>
 
+            <!-- BUYER CARD -->
+            <div onclick="goToScreen('buyer-dashboard')" class="card-custom p-6 cursor-pointer flex flex-col justify-between border-amber-500/30">
+                <div>
+                    <div class="w-12 h-12 bg-amber-500/20 rounded-xl flex items-center justify-center text-2xl mb-4 border border-amber-500/40">🛒</div>
+                    <h3 class="text-2xl font-bold text-white" data-en="Buyer Marketplace" data-mr="खरेदीदार बाजारपेठ">Buyer Marketplace</h3>
+                    <p class="text-xs text-gray-300 mt-2 leading-relaxed" data-en="Browse fresh organic produce, grains & vegetables. Connect via WhatsApp/Call to farmers directly." data-mr="ताजी सेंद्रिय पिके, धान्य आणि भाजीपाला पहा. थेट शेतकऱ्यांशी व्हॉट्सॲप / कॉल द्वारे संपर्क साधा.">
+                        Browse fresh organic produce, grains & vegetables. Connect via WhatsApp/Call to farmers directly.
+                    </p>
+                </div>
+                <div class="mt-6 flex items-center text-amber-400 text-sm font-bold gap-2">
+                    <span data-en="Explore Produce Market" data-mr="उत्पादन बाजारपेठ तपासा">Explore Produce Market</span> →
+                </div>
+            </div>
+
+        </div>
+
+        <!-- STATS BAR -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-4xl mt-6 pt-6 border-t border-green-900/50 text-center text-xs text-gray-400">
+            <div><b class="text-white text-sm block">0%</b> <span data-en="Commission Middleman" data-mr="दलाल आयोग">Commission Middleman</span></div>
+            <div><b class="text-white text-sm block">100%</b> <span data-en="Direct Farmer Trade" data-mr="थेट शेतकरी व्यापार">Direct Farmer Trade</span></div>
+            <div><b class="text-white text-sm block">24/7</b> <span data-en="Kisan AI Advisory" data-mr="किसान AI सल्ला">Kisan AI Advisory</span></div>
+            <div><b class="text-white text-sm block">WhatsApp</b> <span data-en="Instant Farmer Connect" data-mr="त्वरित शेतकरी संपर्क">Instant Farmer Connect</span></div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ================= 2. FARMER DASHBOARD ================= -->
+<section id="screen-farmer-dashboard" class="screen bg-[#08160e] p-6">
+    <div class="max-w-7xl mx-auto w-full">
+        <button onclick="goToScreen('landing')" class="btn-orange mb-6 text-sm py-2 px-4 flex items-center gap-2 w-max">← <span data-en="Back to Home" data-mr="मुख्य पानावर जा">Back to Home</span></button>
+
+        <div class="card-custom p-6 mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <span class="bg-green-900 text-green-300 text-xs font-semibold px-3 py-1 rounded-full uppercase" data-en="Farmer Portal" data-mr="शेतकरी पोर्टल">Farmer Portal</span>
+                <h2 class="text-3xl font-bold text-white mt-2">👋 <span data-en="Welcome Farmer" data-mr="सुस्वागतम शेतकरी">Welcome Farmer</span></h2>
+                <p class="text-gray-300 text-sm mt-1"><span data-en="Manage your profile, field info, and list your crops below." data-mr="तुमची माहिती, शेतीचा तपशील आणि पिके खाली जोडा.">Manage your profile, field info, and list your crops below.</span></p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <button onclick="goToScreen('farmer-profile')" class="btn-orange text-sm">👤 <span data-en="Profile & Socials" data-mr="प्रोफाइल आणि सोशल लिंक्स">Profile & Socials</span></button>
+                <button onclick="goToScreen('farmer-field-info')" class="btn-green text-sm">🌱 <span data-en="Field & Crops Info" data-mr="शेत आणि पीक माहिती">Field & Crops Info</span></button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div onclick="goToScreen('marketplace-sell')" class="card-custom p-5 cursor-pointer text-center">
+                <div class="text-4xl mb-2">🏷️</div>
+                <h3 class="font-bold text-white" data-en="Sell Product" data-mr="उत्पादन विका">Sell Product</h3>
+                <p class="text-xs text-gray-400 mt-1" data-en="List crops for buyers" data-mr="खरेदीदारांसाठी पीक जोडा">List crops for buyers</p>
+            </div>
+            <div onclick="goToScreen('cost')" class="card-custom p-5 cursor-pointer text-center">
+                <div class="text-4xl mb-2">💰</div>
+                <h3 class="font-bold text-white" data-en="Profit Calculator" data-mr="नफा कॅल्क्युलेटर">Profit Calculator</h3>
+                <p class="text-xs text-gray-400 mt-1" data-en="Calculate farming ROI" data-mr="शेतीचा नफा मोजा">Calculate farming ROI</p>
+            </div>
+            <div onclick="goToScreen('weather')" class="card-custom p-5 cursor-pointer text-center">
+                <div class="text-4xl mb-2">🌦️</div>
+                <h3 class="font-bold text-white" data-en="Weather Forecast" data-mr="हवामान अंदाज">Weather Forecast</h3>
+                <p class="text-xs text-gray-400 mt-1" data-en="Rain & climate info" data-mr="पाऊस आणि हवामान माहिती">Rain & climate info</p>
+            </div>
+            <div onclick="goToScreen('helpline')" class="card-custom p-5 cursor-pointer text-center">
+                <div class="text-4xl mb-2">☎️</div>
+                <h3 class="font-bold text-white" data-en="Helpline Support" data-mr="हेल्पलाइन मदत">Helpline Support</h3>
+                <p class="text-xs text-gray-400 mt-1" data-en="Expert advisory" data-mr="तज्ज्ञ सल्ला">Expert advisory</p>
+            </div>
         </div>
     </div>
 </section>
 
 
-<!-- ================= 2. FARMER ONBOARDING ================= -->
-<section id="screen-farmer-onboarding" class="screen">
-    <div class="min-h-screen flex items-center justify-center p-5 bg-farm-pale">
-        <div class="card w-full max-w-lg">
-            <button onclick="goBack()" class="btn-orange mb-4 text-sm py-2 px-4">← Back</button>
-            <div class="text-center">
-                <div class="text-5xl">👨‍🌾</div>
-                <h2 class="text-3xl font-bold text-farm-dark mt-2">Farmer Registration</h2>
-                <p class="text-gray-500 mt-1">Enter your details to access your farming dashboard</p>
-            </div>
+<!-- ================= 3. FARMER PROFILE SECTION ================= -->
+<section id="screen-farmer-profile" class="screen bg-[#08160e] p-6">
+    <div class="max-w-2xl mx-auto w-full">
+        <button onclick="goBack()" class="btn-orange mb-6 text-sm py-2 px-4 flex items-center gap-2 w-max">← <span data-en="Back" data-mr="मागे">Back</span></button>
+        
+        <div class="card-custom p-6">
+            <h2 class="text-2xl font-bold text-white mb-2" data-en="Farmer Profile & Social Links" data-mr="शेतकरी प्रोफाइल आणि सोशल लिंक्स">Farmer Profile & Social Links</h2>
+            <p class="text-xs text-gray-300 mb-6" data-en="Save your details so buyers can contact you directly." data-mr="तुमची माहिती सेव्ह करा जेणेकरून खरेदीदार थेट संपर्क साधू शकतील.">Save your details so buyers can contact you directly.</p>
 
-            <form onsubmit="submitFarmerOnboarding(event)" class="mt-6 space-y-4">
+            <form onsubmit="saveFarmerProfile(event)" class="space-y-4">
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name</label>
-                    <input id="onboard-farmer-name" type="text" required placeholder="e.g. Ramesh Patil" class="w-full border-2 border-gray-200 rounded-xl p-3 outline-none focus:border-green-500">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1" data-en="Full Name" data-mr="पूर्ण नाव">Full Name</label>
+                    <input id="prof-name" required class="w-full bg-[#0a1f12] border border-green-800 rounded-xl p-3 text-white text-sm outline-none focus:border-green-500" placeholder="e.g. Ramesh Patil">
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1" data-en="Farmer ID" data-mr="शेतकरी आयडी">Farmer ID</label>
+                        <input id="prof-id" required class="w-full bg-[#0a1f12] border border-green-800 rounded-xl p-3 text-white text-sm outline-none focus:border-green-500" placeholder="e.g. FM-99201">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1" data-en="Location / Village" data-mr="गाव / ठिकाण">Location / Village</label>
+                        <input id="prof-loc" required class="w-full bg-[#0a1f12] border border-green-800 rounded-xl p-3 text-white text-sm outline-none focus:border-green-500" placeholder="e.g. Kolhapur">
+                    </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Farmer ID / Reg Number</label>
-                    <input id="onboard-farmer-id" type="text" required placeholder="e.g. FM-84920" class="w-full border-2 border-gray-200 rounded-xl p-3 outline-none focus:border-green-500">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1" data-en="WhatsApp Phone Number (for direct buyer orders)" data-mr="व्हॉट्सॲप फोन नंबर (थेट ऑर्डरसाठी)">WhatsApp Phone Number</label>
+                    <input id="prof-phone" type="tel" required class="w-full bg-[#0a1f12] border border-green-800 rounded-xl p-3 text-white text-sm outline-none focus:border-green-500" placeholder="e.g. 919876543210">
                 </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Location / Village / City</label>
-                    <input id="onboard-farmer-loc" type="text" required placeholder="e.g. Kolhapur, Maharashtra" class="w-full border-2 border-gray-200 rounded-xl p-3 outline-none focus:border-green-500">
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Instagram Link</label>
+                        <input id="prof-insta" class="w-full bg-[#0a1f12] border border-green-800 rounded-xl p-3 text-white text-sm outline-none focus:border-green-500" placeholder="https://instagram.com/...">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Facebook Link</label>
+                        <input id="prof-fb" class="w-full bg-[#0a1f12] border border-green-800 rounded-xl p-3 text-white text-sm outline-none focus:border-green-500" placeholder="https://facebook.com/...">
+                    </div>
                 </div>
 
-                <button class="btn-primary w-full text-lg py-3 mt-2">
-                    Enter Farmer Dashboard →
-                </button>
+                <button class="btn-orange w-full py-3 mt-4" data-en="Save Profile" data-mr="प्रोफाइल सेव्ह करा">Save Profile</button>
             </form>
         </div>
     </div>
 </section>
 
 
-<!-- ================= 3. BUYER ONBOARDING ================= -->
-<section id="screen-buyer-onboarding" class="screen">
-    <div class="min-h-screen flex items-center justify-center p-5 bg-farm-pale">
-        <div class="card w-full max-w-lg">
-            <button onclick="goBack()" class="btn-orange mb-4 text-sm py-2 px-4">← Back</button>
-            <div class="text-center">
-                <div class="text-5xl">🛒</div>
-                <h2 class="text-3xl font-bold text-farm-dark mt-2">Buyer Registration</h2>
-                <p class="text-gray-500 mt-1">Enter your details to find nearby farmer goods</p>
-            </div>
+<!-- ================= 4. FARMER FIELD & CROPS INFO ================= -->
+<section id="screen-farmer-field-info" class="screen bg-[#08160e] p-6">
+    <div class="max-w-2xl mx-auto w-full">
+        <button onclick="goBack()" class="btn-orange mb-6 text-sm py-2 px-4 flex items-center gap-2 w-max">← <span data-en="Back" data-mr="मागे">Back</span></button>
+        
+        <div class="card-custom p-6">
+            <h2 class="text-2xl font-bold text-white mb-2" data-en="Field & Crops Information" data-mr="शेत आणि पीक माहिती">Field & Crops Information</h2>
+            <p class="text-xs text-gray-300 mb-6" data-en="Record your land size, soil type, and active crops." data-mr="तुमच्या जमिनीचे क्षेत्रफळ, मातीचा प्रकार आणि पिकांची माहिती नोंदवा.">Record your land size, soil type, and active crops.</p>
 
-            <form onsubmit="submitBuyerOnboarding(event)" class="mt-6 space-y-4">
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name / Business Name</label>
-                    <input id="onboard-buyer-name" type="text" required placeholder="e.g. Anita Sharma" class="w-full border-2 border-gray-200 rounded-xl p-3 outline-none focus:border-green-500">
+            <form onsubmit="saveFieldInfo(event)" class="space-y-4">
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1" data-en="Land Size (Acres)" data-mr="जमिनीचे क्षेत्रफळ (एकर)">Land Size (Acres)</label>
+                        <input id="field-size" class="w-full bg-[#0a1f12] border border-green-800 rounded-xl p-3 text-white text-sm outline-none focus:border-green-500" placeholder="e.g. 5 Acres">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1" data-en="Soil Type" data-mr="मातीचा प्रकार">Soil Type</label>
+                        <input id="field-soil" class="w-full bg-[#0a1f12] border border-green-800 rounded-xl p-3 text-white text-sm outline-none focus:border-green-500" placeholder="e.g. Black Cotton Soil">
+                    </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Your Location / City</label>
-                    <input id="onboard-buyer-loc" type="text" required placeholder="e.g. Pune, Maharashtra" class="w-full border-2 border-gray-200 rounded-xl p-3 outline-none focus:border-green-500">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1" data-en="Active Crops Grown" data-mr="सध्या उगवणारी पिके">Active Crops Grown</label>
+                    <input id="field-crops" class="w-full bg-[#0a1f12] border border-green-800 rounded-xl p-3 text-white text-sm outline-none focus:border-green-500" placeholder="e.g. Wheat, Tomatoes, Rice">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1" data-en="Field Notes & Advisory" data-mr="शेतीविषयी टीपा आणि सल्ला">Field Notes & Advisory</label>
+                    <textarea id="field-notes" rows="4" class="w-full bg-[#0a1f12] border border-green-800 rounded-xl p-3 text-white text-sm outline-none focus:border-green-500" placeholder="Add notes about your irrigation or fertilizers..."></textarea>
                 </div>
 
-                <button class="btn-primary w-full text-lg py-3 mt-2">
-                    Browse Local Produce →
-                </button>
+                <button class="btn-orange w-full py-3 mt-4" data-en="Save Field Info" data-mr="शेती माहिती सेव्ह करा">Save Field Info</button>
             </form>
         </div>
     </div>
 </section>
 
 
-<!-- ================= 4. FARMER DASHBOARD ================= -->
-<section id="screen-farmer-dashboard" class="screen">
-    <div class="flex-1 bg-farm-pale p-5 md:p-8">
-        <div class="max-w-7xl mx-auto">
-            
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+<!-- ================= 5. FARMER SELL PRODUCT FORM ================= -->
+<section id="screen-marketplace-sell" class="screen bg-[#08160e] p-6">
+    <div class="max-w-2xl mx-auto w-full">
+        <button onclick="goBack()" class="btn-orange mb-6 text-sm py-2 px-4 flex items-center gap-2 w-max">← <span data-en="Back" data-mr="मागे">Back</span></button>
+        
+        <div class="card-custom p-6">
+            <h2 class="text-2xl font-bold text-white mb-2" data-en="List Crop for Sale" data-mr="विक्रीसाठी पीक जोडा">List Crop for Sale</h2>
+            <p class="text-xs text-gray-300 mb-6" data-en="Your product will instantly appear in the buyer marketplace." data-mr="तुमचे उत्पादन त्वरित खरेदीदार बाजारपेठेत दिसेल.">Your product will instantly appear in the buyer marketplace.</p>
+
+            <form onsubmit="publishProduct(event)" class="space-y-4">
                 <div>
-                    <span class="bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Farmer Portal</span>
-                    <h2 class="text-3xl font-bold text-farm-dark mt-1">👋 Welcome, <span class="farmer-display-name">Farmer</span></h2>
-                    <p class="text-gray-600 text-sm">ID: <span id="farmer-id-display">N/A</span> | Location: <span id="farmer-loc-display">N/A</span></p>
-                </div>
-                <div class="flex gap-3 flex-wrap">
-                    <button onclick="goToScreen('farmer-profile')" class="btn-orange">👤 Profile & Socials</button>
-                    <button onclick="goToScreen('farmer-field-info')" class="btn-primary">🌱 Field & Crops Info</button>
-                    <button onclick="goToScreen('landing')" class="bg-gray-200 text-gray-700 font-bold px-4 py-2 rounded-xl text-sm">Switch Role</button>
-                </div>
-            </div>
-
-            <!-- FARMER TOOLS GRID -->
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-                <div class="card cursor-pointer" onclick="goToScreen('marketplace-sell')">
-                    <div class="text-4xl">🏷️</div>
-                    <h3 class="font-bold text-lg mt-3">Sell Products</h3>
-                    <p class="text-xs text-gray-500">Post crops for consumers & direct buyers</p>
-                </div>
-
-                <div class="card cursor-pointer" onclick="goToScreen('howto')">
-                    <div class="text-4xl">🌱</div>
-                    <h3 class="font-bold text-lg mt-3">How to Farm</h3>
-                    <p class="text-xs text-gray-500">Step-by-step crop growing guidance</p>
-                </div>
-
-                <div class="card cursor-pointer" onclick="goToScreen('weather')">
-                    <div class="text-4xl">🌦️</div>
-                    <h3 class="font-bold text-lg mt-3">Live Weather</h3>
-                    <p class="text-xs text-gray-500">Local climate & rain forecast</p>
-                </div>
-
-                <div class="card cursor-pointer" onclick="goToScreen('cost')">
-                    <div class="text-4xl">💰</div>
-                    <h3 class="font-bold text-lg mt-3">Profit Calculator</h3>
-                    <p class="text-xs text-gray-500">Estimate revenue vs investment</p>
-                </div>
-
-                <div class="card cursor-pointer" onclick="goToScreen('season')">
-                    <div class="text-4xl">📅</div>
-                    <h3 class="font-bold text-lg mt-3">Season & Crops</h3>
-                    <p class="text-xs text-gray-500">Kharif, Rabi & Summer advice</p>
-                </div>
-
-                <div class="card cursor-pointer" onclick="goToScreen('harvest')">
-                    <div class="text-4xl">🌾</div>
-                    <h3 class="font-bold text-lg mt-3">Harvest Guide</h3>
-                    <p class="text-xs text-gray-500">Optimal harvesting windows</p>
-                </div>
-
-                <div class="card cursor-pointer" onclick="goToScreen('drought')">
-                    <div class="text-4xl">🚱</div>
-                    <h3 class="font-bold text-lg mt-3">Low Rain Solutions</h3>
-                    <p class="text-xs text-gray-500">Water conservation methods</p>
-                </div>
-
-                <div class="card cursor-pointer" onclick="goToScreen('helpline')">
-                    <div class="text-4xl">☎️</div>
-                    <h3 class="font-bold text-lg mt-3">Helpline Support</h3>
-                    <p class="text-xs text-gray-500">Direct expert advisory</p>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-
-<!-- ================= 5. FARMER PROFILE SECTION ================= -->
-<section id="screen-farmer-profile" class="screen">
-    <div class="flex-1 bg-white p-5 md:p-8">
-        <div class="max-w-2xl mx-auto">
-            <button onclick="goBack()" class="btn-orange mb-5">← Back</button>
-            <div class="section-header">
-                <h2 class="text-2xl md:text-3xl font-bold">👤 Farmer Profile & Social Links</h2>
-                <p class="text-sm opacity-90">Update and save your personal details and social media links</p>
-            </div>
-
-            <form onsubmit="saveFarmerProfile(event)" class="card space-y-4">
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700">Full Name</label>
-                    <input id="profile-name" required class="w-full border rounded-xl p-3 mt-1 outline-none focus:border-green-500">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1" data-en="Crop Name" data-mr="पिकाचे नाव">Crop Name</label>
+                    <input id="p-name" required class="w-full bg-[#0a1f12] border border-green-800 rounded-xl p-3 text-white text-sm outline-none focus:border-green-500" placeholder="e.g. Organic Wheat">
                 </div>
                 <div class="grid md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700">Farmer ID</label>
-                        <input id="profile-id" required class="w-full border rounded-xl p-3 mt-1 outline-none focus:border-green-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700">Location / Village</label>
-                        <input id="profile-location" required class="w-full border rounded-xl p-3 mt-1 outline-none focus:border-green-500">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700">Phone Number</label>
-                    <input id="profile-phone" type="tel" placeholder="e.g. +91 9876543210" class="w-full border rounded-xl p-3 mt-1 outline-none focus:border-green-500">
-                </div>
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700">Instagram Profile Link</label>
-                        <input id="profile-instagram" type="url" placeholder="https://instagram.com/yourprofile" class="w-full border rounded-xl p-3 mt-1 outline-none focus:border-green-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700">Facebook Profile Link</label>
-                        <input id="profile-facebook" type="url" placeholder="https://facebook.com/yourprofile" class="w-full border rounded-xl p-3 mt-1 outline-none focus:border-green-500">
-                    </div>
-                </div>
-
-                <button class="btn-primary w-full text-lg py-3 mt-4">
-                    💾 Save Profile Information
-                </button>
-            </form>
-        </div>
-    </div>
-</section>
-
-
-<!-- ================= 6. FARMER FIELD & CROPS INFO SECTION ================= -->
-<section id="screen-farmer-field-info" class="screen">
-    <div class="flex-1 bg-white p-5 md:p-8">
-        <div class="max-w-2xl mx-auto">
-            <button onclick="goBack()" class="btn-orange mb-5">← Back</button>
-            <div class="section-header">
-                <h2 class="text-2xl md:text-3xl font-bold">🌱 Field & Crops Information</h2>
-                <p class="text-sm opacity-90">Document your farm size, soil type, and active crops</p>
-            </div>
-
-            <form onsubmit="saveFarmerFieldInfo(event)" class="card space-y-4">
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700">Farm Land Size (Acres / Hectares)</label>
-                        <input id="field-size" placeholder="e.g. 5 Acres" class="w-full border rounded-xl p-3 mt-1 outline-none focus:border-green-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700">Soil Type</label>
-                        <input id="field-soil" placeholder="e.g. Black Cotton Soil / Loamy" class="w-full border rounded-xl p-3 mt-1 outline-none focus:border-green-500">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700">Active Crops Currently Grown</label>
-                    <input id="field-active-crops" placeholder="e.g. Wheat, Tomatoes, Sugarcane" class="w-full border rounded-xl p-3 mt-1 outline-none focus:border-green-500">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700">Irrigation System Used</label>
-                    <input id="field-irrigation" placeholder="e.g. Drip Irrigation / Borewell" class="w-full border rounded-xl p-3 mt-1 outline-none focus:border-green-500">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700">Field Notes & Observations</label>
-                    <textarea id="field-notes" rows="4" placeholder="Write any specific notes about your farm, fertilizer history, or pest management..." class="w-full border rounded-xl p-3 mt-1 outline-none focus:border-green-500"></textarea>
-                </div>
-
-                <button class="btn-primary w-full text-lg py-3 mt-4">
-                    💾 Save Field Information
-                </button>
-            </form>
-        </div>
-    </div>
-</section>
-
-
-<!-- ================= 7. BUYER DASHBOARD ================= -->
-<section id="screen-buyer-dashboard" class="screen">
-    <div class="flex-1 bg-farm-pale p-5 md:p-8">
-        <div class="max-w-7xl mx-auto">
-            
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-                <div>
-                    <span class="bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Buyer Portal</span>
-                    <h2 class="text-3xl font-bold text-farm-dark mt-1">🛒 Hello, <span class="buyer-display-name">Buyer</span></h2>
-                    <p class="text-gray-600 text-sm">Location: <span id="buyer-loc-display">N/A</span> | Directly purchase fresh harvests from local farmers</p>
-                </div>
-                <div class="flex gap-3">
-                    <button onclick="toggleCartModal()" class="btn-orange relative">
-                        🛒 View Cart (<span id="cart-count">0</span>)
-                    </button>
-                    <button onclick="goToScreen('landing')" class="bg-white text-farm-dark border border-gray-300 font-bold px-4 py-2 rounded-xl text-sm">Switch Role</button>
-                </div>
-            </div>
-
-            <!-- SEARCH & FILTERS -->
-            <div class="card mb-6">
-                <div class="grid md:grid-cols-3 gap-4">
-                    <input id="buyerSearchInput" oninput="renderBuyerProducts()" placeholder="🔍 Search crop name, city, or farmer..." class="border rounded-xl p-3 md:col-span-2 outline-none focus:border-green-500">
-                    <select id="buyerCategoryFilter" onchange="renderBuyerProducts()" class="border rounded-xl p-3 outline-none focus:border-green-500">
-                        <option value="all">All Categories</option>
-                        <option value="Grains">Grains</option>
-                        <option value="Vegetables">Vegetables</option>
-                        <option value="Fruits">Fruits</option>
-                        <option value="Pulses">Pulses</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- PRODUCT GRID -->
-            <div id="buyerProductGrid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                <!-- Dynamically Rendered -->
-            </div>
-
-        </div>
-    </div>
-</section>
-
-
-<!-- ================= 8. FARMER SELLING FORM ================= -->
-<section id="screen-marketplace-sell" class="screen">
-    <div class="flex-1 bg-white p-5 md:p-8">
-        <div class="max-w-2xl mx-auto">
-            <button onclick="goBack()" class="btn-orange mb-5">← Back</button>
-            <div class="section-header">
-                <h2 class="text-2xl md:text-3xl font-bold">🌾 List Crop for Sale</h2>
-                <p class="text-sm opacity-90">Post your fresh produce directly into the marketplace</p>
-            </div>
-
-            <form onsubmit="addProduct(event)" class="card space-y-4">
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700">Crop Name</label>
-                    <input id="productName" required placeholder="e.g. Organic Wheat, Tomato" class="w-full border rounded-xl p-3 mt-1 outline-none focus:border-green-500">
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700">Category</label>
-                        <select id="productCategory" required class="w-full border rounded-xl p-3 mt-1 outline-none focus:border-green-500">
-                            <option value="">Select Category</option>
-                            <option value="Grains">Grains</option>
-                            <option value="Vegetables">Vegetables</option>
-                            <option value="Fruits">Fruits</option>
-                            <option value="Pulses">Pulses</option>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1" data-en="Category" data-mr="वर्ग">Category</label>
+                        <select id="p-cat" class="w-full bg-[#0a1f12] border border-green-800 rounded-xl p-3 text-white text-sm outline-none focus:border-green-500">
+                            <option value="Grains">Grains / धान्य</option>
+                            <option value="Vegetables">Vegetables / भाजीपाला</option>
+                            <option value="Fruits">Fruits / फळे</option>
+                            <option value="Pulses">Pulses / कडधान्य</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700">Display Emoji</label>
-                        <select id="productEmoji" class="w-full border rounded-xl p-3 mt-1 outline-none focus:border-green-500">
-                            <option value="🌾">🌾 Wheat / Grain</option>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1" data-en="Emoji Icon" data-mr="इमोजी आयकॉन">Emoji Icon</label>
+                        <select id="p-emoji" class="w-full bg-[#0a1f12] border border-green-800 rounded-xl p-3 text-white text-sm outline-none focus:border-green-500">
+                            <option value="🌾">🌾 Wheat</option>
                             <option value="🍚">🍚 Rice</option>
-                            <option value="🥔">🥔 Potato</option>
                             <option value="🍅">🍅 Tomato</option>
-                            <option value="🥭">🥭 Fruit</option>
+                            <option value="🥔">🥔 Potato</option>
+                            <option value="🥭">🥭 Mango</option>
                             <option value="🫘">🫘 Pulses</option>
                         </select>
                     </div>
                 </div>
-
                 <div class="grid md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700">Price (₹ per kg)</label>
-                        <input id="productPrice" required type="number" min="1" placeholder="e.g. 40" class="w-full border rounded-xl p-3 mt-1 outline-none focus:border-green-500">
+                        <label class="block text-xs font-semibold text-gray-300 mb-1" data-en="Price (₹ per kg)" data-mr="किमत (₹ प्रति किलो)">Price (₹ per kg)</label>
+                        <input id="p-price" type="number" min="1" required class="w-full bg-[#0a1f12] border border-green-800 rounded-xl p-3 text-white text-sm outline-none focus:border-green-500" placeholder="e.g. 40">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700">Quantity (kg)</label>
-                        <input id="productQuantity" required type="number" min="1" placeholder="e.g. 500" class="w-full border rounded-xl p-3 mt-1 outline-none focus:border-green-500">
+                        <label class="block text-xs font-semibold text-gray-300 mb-1" data-en="Quantity Available (kg)" data-mr="उपलब्ध प्रमाण (किलो)">Quantity Available (kg)</label>
+                        <input id="p-qty" type="number" min="1" required class="w-full bg-[#0a1f12] border border-green-800 rounded-xl p-3 text-white text-sm outline-none focus:border-green-500" placeholder="e.g. 500">
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700">Your Location / Village</label>
-                    <input id="farmerLocationInput" required placeholder="e.g. Kolhapur, Maharashtra" class="w-full border rounded-xl p-3 mt-1 outline-none focus:border-green-500">
-                </div>
-
-                <button class="btn-primary w-full text-lg py-3 mt-4">
-                    ➕ Publish Product
-                </button>
+                <button class="btn-orange w-full py-3 mt-4" data-en="Publish Product" data-mr="उत्पादन पब्लिश करा">Publish Product</button>
             </form>
         </div>
     </div>
 </section>
 
 
-<!-- ================= 9. PROFIT CALCULATOR ================= -->
-<section id="screen-cost" class="screen">
-    <div class="flex-1 bg-white p-5 md:p-8">
-        <div class="max-w-2xl mx-auto">
-            <button onclick="goBack()" class="btn-orange mb-5">← Back</button>
-            <div class="section-header">
-                <h2 class="text-2xl font-bold">💰 Cost & Profit Calculator</h2>
-            </div>
-            <div class="card space-y-4">
-                <div>
-                    <label class="font-semibold text-sm">Total Farming Cost (₹)</label>
-                    <input id="costInput" type="number" value="16500" class="w-full border rounded-lg p-3 mt-1">
-                </div>
-                <div>
-                    <label class="font-semibold text-sm">Expected Revenue (₹)</label>
-                    <input id="revenueInput" type="number" value="48400" class="w-full border rounded-lg p-3 mt-1">
-                </div>
-                <button onclick="calculateProfit()" class="btn-primary w-full py-3">Calculate Profit</button>
+<!-- ================= 6. BUYER DASHBOARD & MARKETPLACE ================= -->
+<section id="screen-buyer-dashboard" class="screen bg-[#08160e] p-6">
+    <div class="max-w-7xl mx-auto w-full">
+        <button onclick="goToScreen('landing')" class="btn-orange mb-6 text-sm py-2 px-4 flex items-center gap-2 w-max">← <span data-en="Back to Home" data-mr="मुख्य पानावर जा">Back to Home</span></button>
 
-                <div id="profitResult" class="hidden bg-green-50 border border-green-300 rounded-xl p-4 mt-4">
-                    <h3 class="font-bold text-lg text-green-900">📈 Result Breakdown</h3>
-                    <p id="profitText" class="mt-2 text-sm leading-relaxed"></p>
-                </div>
+        <div class="card-custom p-6 mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <span class="bg-amber-500/20 text-amber-400 text-xs font-semibold px-3 py-1 rounded-full uppercase border border-amber-500/30" data-en="Buyer Marketplace" data-mr="खरेदीदार बाजारपेठ">Buyer Marketplace</span>
+                <h2 class="text-3xl font-bold text-white mt-2" data-en="Fresh Farm Produce" data-mr="ताजा शेतमाल">Fresh Farm Produce</h2>
+                <p class="text-gray-300 text-sm mt-1" data-en="Click 'Buy on WhatsApp' to instantly message farmers directly." data-mr="'WhatsApp वर खरेदी करा' वर क्लिक करून थेट शेतकऱ्यांशी संपर्क साधा.">Click 'Buy on WhatsApp' to instantly message farmers directly.</p>
             </div>
+            <div>
+                <input id="searchProd" oninput="renderMarketplace()" class="bg-[#0a1f12] border border-green-800 text-white text-sm rounded-xl px-4 py-2.5 outline-none focus:border-green-500 w-64" placeholder="🔍 Search crops or city...">
+            </div>
+        </div>
+
+        <div id="marketplaceGrid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <!-- Dynamically populated from farmer listings -->
         </div>
     </div>
 </section>
 
 
-<!-- ================= 10. WEATHER ================= -->
-<section id="screen-weather" class="screen">
-    <div class="flex-1 bg-farm-pale p-5 md:p-8">
-        <div class="max-w-4xl mx-auto">
-            <button onclick="goBack()" class="btn-orange mb-5">← Back</button>
-            <div class="section-header">
-                <h2 class="text-2xl font-bold">🌦️ Farming Weather Forecast</h2>
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="card text-center">
-                    <div class="text-3xl">🌡️</div>
-                    <h3 class="text-xl font-bold mt-2">31°C</h3>
-                    <p class="text-xs text-gray-500">Temperature</p>
-                </div>
-                <div class="card text-center">
-                    <div class="text-3xl">🌧️</div>
-                    <h3 class="text-xl font-bold mt-2">40%</h3>
-                    <p class="text-xs text-gray-500">Rain Chance</p>
-                </div>
-                <div class="card text-center">
-                    <div class="text-3xl">💧</div>
-                    <h3 class="text-xl font-bold mt-2">60%</h3>
-                    <p class="text-xs text-gray-500">Humidity</p>
-                </div>
-                <div class="card text-center">
-                    <div class="text-3xl">💨</div>
-                    <h3 class="text-xl font-bold mt-2">14 km/h</h3>
-                    <p class="text-xs text-gray-500">Wind Speed</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<!-- ================= 11. HOW TO FARM ================= -->
-<section id="screen-howto" class="screen">
-    <div class="flex-1 bg-white p-5 md:p-8">
-        <div class="max-w-4xl mx-auto">
-            <button onclick="goBack()" class="btn-orange mb-5">← Back</button>
-            <div class="section-header">
-                <h2 class="text-2xl font-bold">🌱 Farming Steps Guide</h2>
-            </div>
+<!-- ================= 7. PROFIT CALCULATOR ================= -->
+<section id="screen-cost" class="screen bg-[#08160e] p-6">
+    <div class="max-w-xl mx-auto w-full">
+        <button onclick="goBack()" class="btn-orange mb-6 text-sm py-2 px-4 flex items-center gap-2 w-max">← <span data-en="Back" data-mr="मागे">Back</span></button>
+        <div class="card-custom p-6">
+            <h2 class="text-2xl font-bold text-white mb-4" data-en="Cost & Profit Calculator" data-mr="खर्च आणि नफा कॅल्क्युलेटर">Cost & Profit Calculator</h2>
             <div class="space-y-4">
-                <div class="card">
-                    <h3 class="font-bold text-lg">1. Soil Preparation</h3>
-                    <p class="text-sm text-gray-600 mt-1">Plough thoroughly and enrich with natural compost before sowing.</p>
+                <div>
+                    <label class="text-xs text-gray-300 block mb-1" data-en="Total Farming Cost (₹)" data-mr="एकूण शेती खर्च (₹)">Total Farming Cost (₹)</label>
+                    <input id="calc-cost" type="number" value="15000" class="w-full bg-[#0a1f12] border border-green-800 rounded-xl p-3 text-white text-sm outline-none">
                 </div>
-                <div class="card">
-                    <h3 class="font-bold text-lg">2. Seed Selection</h3>
-                    <p class="text-sm text-gray-600 mt-1">Use high-yield certified seeds suitable for regional climate.</p>
+                <div>
+                    <label class="text-xs text-gray-300 block mb-1" data-en="Expected Revenue (₹)" data-mr="अपेक्षित उत्पन्न (₹)">Expected Revenue (₹)</label>
+                    <input id="calc-rev" type="number" value="45000" class="w-full bg-[#0a1f12] border border-green-800 rounded-xl p-3 text-white text-sm outline-none">
                 </div>
-                <div class="card">
-                    <h3 class="font-bold text-lg">3. Water Management</h3>
-                    <p class="text-sm text-gray-600 mt-1">Irrigate during early mornings or late evenings to limit evaporation loss.</p>
-                </div>
+                <button onclick="calculateProfit()" class="btn-orange w-full py-3" data-en="Calculate Profit" data-mr="नफा मोजा">Calculate Profit</button>
+                <div id="calc-result" class="hidden mt-4 p-4 bg-green-950 border border-green-800 rounded-xl text-sm"></div>
             </div>
         </div>
     </div>
 </section>
 
 
-<!-- ================= 12. SEASON ================= -->
-<section id="screen-season" class="screen">
-    <div class="flex-1 bg-farm-pale p-5 md:p-8">
-        <div class="max-w-4xl mx-auto">
-            <button onclick="goBack()" class="btn-orange mb-5">← Back</button>
-            <div class="section-header">
-                <h2 class="text-2xl font-bold">📅 Crop Season Calendar</h2>
-            </div>
-            <div class="grid md:grid-cols-3 gap-4">
-                <div class="card">
-                    <h3 class="font-bold text-green-700">🌧️ Kharif</h3>
-                    <p class="text-xs text-gray-500 mb-3">Monsoon (July–Oct)</p>
-                    <p class="text-sm">🍚 Rice • 🌽 Maize • 🧶 Cotton</p>
-                </div>
-                <div class="card">
-                    <h3 class="font-bold text-green-700">❄️ Rabi</h3>
-                    <p class="text-xs text-gray-500 mb-3">Winter (Oct–March)</p>
-                    <p class="text-sm">🌾 Wheat • 🟡 Mustard • 🥔 Potato</p>
-                </div>
-                <div class="card">
-                    <h3 class="font-bold text-green-700">☀️ Summer</h3>
-                    <p class="text-xs text-gray-500 mb-3">Zaid (March–June)</p>
-                    <p class="text-sm">🍉 Watermelon • 🥒 Cucumber</p>
-                </div>
+<!-- ================= 8. WEATHER ================= -->
+<section id="screen-weather" class="screen bg-[#08160e] p-6">
+    <div class="max-w-3xl mx-auto w-full">
+        <button onclick="goBack()" class="btn-orange mb-6 text-sm py-2 px-4 flex items-center gap-2 w-max">← <span data-en="Back" data-mr="मागे">Back</span></button>
+        <div class="card-custom p-6">
+            <h2 class="text-2xl font-bold text-white mb-4" data-en="Live Weather & Climate Advisory" data-mr="हवामान आणि कृषी सल्ला">Live Weather & Climate Advisory</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-[#0a1f12] p-4 rounded-xl border border-green-900"><div class="text-3xl">🌡️</div><b class="text-xl text-white mt-2 block">31°C</b><span class="text-xs text-gray-400">Temperature</span></div>
+                <div class="bg-[#0a1f12] p-4 rounded-xl border border-green-900"><div class="text-3xl">🌧️</div><b class="text-xl text-white mt-2 block">20%</b><span class="text-xs text-gray-400">Rain Chance</span></div>
+                <div class="bg-[#0a1f12] p-4 rounded-xl border border-green-900"><div class="text-3xl">💧</div><b class="text-xl text-white mt-2 block">58%</b><span class="text-xs text-gray-400">Humidity</span></div>
+                <div class="bg-[#0a1f12] p-4 rounded-xl border border-green-900"><div class="text-3xl">💨</div><b class="text-xl text-white mt-2 block">12 km/h</b><span class="text-xs text-gray-400">Wind</span></div>
             </div>
         </div>
     </div>
 </section>
 
 
-<!-- ================= 13. HARVEST ================= -->
-<section id="screen-harvest" class="screen">
-    <div class="flex-1 bg-white p-5 md:p-8">
-        <div class="max-w-4xl mx-auto">
-            <button onclick="goBack()" class="btn-orange mb-5">← Back</button>
-            <div class="section-header">
-                <h2 class="text-2xl font-bold">🌾 Harvest Timelines</h2>
-            </div>
-            <div class="grid md:grid-cols-2 gap-4">
-                <div class="card">
-                    <h3 class="font-bold">🌾 Wheat Maturity</h3>
-                    <p class="text-sm text-gray-600 mt-1">Harvest when golden-yellow and grain feels solid to firm bite.</p>
-                </div>
-                <div class="card">
-                    <h3 class="font-bold">🍚 Rice Maturity</h3>
-                    <p class="text-sm text-gray-600 mt-1">Harvest when 80-85% of panicles turn golden yellow.</p>
-                </div>
-            </div>
+<!-- ================= 9. HELPLINE ================= -->
+<section id="screen-helpline" class="screen bg-[#08160e] p-6">
+    <div class="max-w-xl mx-auto w-full text-center">
+        <button onclick="goBack()" class="btn-orange mb-6 text-sm py-2 px-4 flex items-center gap-2 w-max">← <span data-en="Back" data-mr="मागे">Back</span></button>
+        <div class="card-custom p-8">
+            <div class="text-5xl mb-3">📞</div>
+            <h2 class="text-2xl font-bold text-white" data-en="Kisan Toll-Free Helpline" data-mr="किसान टोल-फ्री हेल्पलाइन">Kisan Toll-Free Helpline</h2>
+            <p class="text-3xl font-extrabold text-amber-400 mt-3">1800-180-1551</p>
+            <p class="text-xs text-gray-400 mt-2" data-en="Available 24/7 for farmers across India." data-mr="भारतातील सर्व शेतकऱ्यांसाठी २४/७ उपलब्ध.">Available 24/7 for farmers across India.</p>
         </div>
     </div>
 </section>
 
 
-<!-- ================= 14. DROUGHT ================= -->
-<section id="screen-drought" class="screen">
-    <div class="flex-1 bg-farm-pale p-5 md:p-8">
-        <div class="max-w-4xl mx-auto">
-            <button onclick="goBack()" class="btn-orange mb-5">← Back</button>
-            <div class="section-header">
-                <h2 class="text-2xl font-bold">🚱 Water Management & Low Rain</h2>
-            </div>
-            <div class="space-y-4">
-                <div class="card">
-                    <h3 class="font-bold">💧 Drip & Sprinkler Systems</h3>
-                    <p class="text-sm text-gray-600 mt-1">Reduces water wastage up to 60% compared to traditional flood irrigation.</p>
-                </div>
-                <div class="card">
-                    <h3 class="font-bold">🌿 Soil Mulching</h3>
-                    <p class="text-sm text-gray-600 mt-1">Cover topsoil with organic matter to prevent moisture loss.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<!-- ================= 15. HELPLINE ================= -->
-<section id="screen-helpline" class="screen">
-    <div class="flex-1 bg-white p-5 md:p-8">
-        <div class="max-w-xl mx-auto text-center">
-            <button onclick="goBack()" class="btn-orange mb-5">← Back</button>
-            <div class="card py-8">
-                <div class="text-5xl mb-3">📞</div>
-                <h2 class="text-2xl font-bold text-farm-dark">Kisan Farmer Support</h2>
-                <p class="text-3xl font-extrabold text-green-600 mt-3">1800-180-1551</p>
-                <p class="text-xs text-gray-500 mt-2">Free Toll-Free Agricultural Advisory Line</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<!-- ================= CART MODAL ================= -->
-<div id="cartModal" class="fixed inset-0 bg-black/50 z-[10000] hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-bold text-farm-dark">🛒 Your Cart</h3>
-            <button onclick="toggleCartModal()" class="text-gray-400 hover:text-black font-bold text-xl">✕</button>
-        </div>
-        <div id="cartItemsList" class="space-y-3 max-h-60 overflow-y-auto pr-1">
-            <!-- Items rendered JS -->
-        </div>
-        <div class="border-t pt-4 mt-4">
-            <div class="flex justify-between font-bold text-lg mb-4">
-                <span>Total Amount:</span>
-                <span id="cartTotal">₹0</span>
-            </div>
-            <button onclick="checkoutCart()" class="btn-primary w-full py-3 text-center">
-                ✅ Complete Order
-            </button>
-        </div>
-    </div>
-</div>
-
-
-<!-- ================= AI CHATBOT ================= -->
-<button class="chat-button" onclick="toggleChat()">🤖</button>
-
-<div id="chatWindow" class="chat-window">
-    <div class="bg-farm-dark text-white p-4 flex justify-between items-center">
-        <div>
-            <h3 class="font-bold text-sm">🤖 AgriConnect AI</h3>
-            <p class="text-[10px] text-green-200">24/7 Smart Farm Assistant</p>
-        </div>
-        <button onclick="toggleChat()" class="text-lg">✕</button>
-    </div>
-    <div id="chatMessages" class="chat-messages">
-        <div class="bot-message">
-            👋 Hello! Ask me anything regarding crops, fertilizer, market pricing, or buyers guidance.
-        </div>
-    </div>
-    <div class="p-2 border-t flex gap-2 bg-white">
-        <input id="chatInput" onkeydown="if(event.key==='Enter') sendMessage()" placeholder="Type your question..." class="flex-1 border rounded-lg p-2 text-sm outline-none">
-        <button onclick="sendMessage()" class="btn-primary !px-3 !py-2">➤</button>
-    </div>
-</div>
-
-
-<!-- ================= JAVASCRIPT ================= -->
+<!-- ================= JAVASCRIPT LOGIC ================= -->
 <script>
-/* DATA & STATE PERSISTENCE */
-let farmerData = JSON.parse(localStorage.getItem("agriFarmerProfile")) || {
-    name: "Ramesh Patil",
-    id: "FM-10294",
-    location: "Kolhapur, Maharashtra",
-    phone: "+91 9876543210",
-    instagram: "",
-    facebook: "",
-    fieldSize: "5 Acres",
-    soilType: "Black Cotton Soil",
-    activeCrops: "Wheat, Tomatoes",
-    irrigation: "Drip Irrigation",
-    notes: "Regular organic compost used."
-};
-
-let buyerData = JSON.parse(localStorage.getItem("agriBuyerProfile")) || {
-    name: "Anita Sharma",
-    location: "Pune, Maharashtra"
-};
-
-let cart = [];
-
-const defaultProducts = [
-    { id: 1, name: "Fresh Wheat", category: "Grains", price: 35, quantity: 500, farmer: "Ramesh Patil", location: "Kolhapur", emoji: "🌾" },
-    { id: 2, name: "Organic Rice", category: "Grains", price: 60, quantity: 300, farmer: "Suresh Deshmukh", location: "Pune", emoji: "🍚" },
-    { id: 3, name: "Fresh Tomatoes", category: "Vegetables", price: 30, quantity: 200, farmer: "Ganesh Shinde", location: "Satara", emoji: "🍅" },
-    { id: 4, name: "Fresh Mangoes", category: "Fruits", price: 90, quantity: 150, farmer: "Rahul Pawar", location: "Ratnagiri", emoji: "🥭" },
-    { id: 5, name: "Tur Dal", category: "Pulses", price: 110, quantity: 100, farmer: "Vijay Jadhav", location: "Latur", emoji: "🫘" },
-    { id: 6, name: "Fresh Potatoes", category: "Vegetables", price: 28, quantity: 400, farmer: "Mahesh Kadam", location: "Nashik", emoji: "🥔" }
-];
-
-/* NAVIGATION & HISTORY STACK */
+let currentLang = 'en';
 let historyStack = ['landing'];
 
-function goToScreen(screenId, pushHistory = true) {
+let farmerProfile = JSON.parse(localStorage.getItem("agriFarmer")) || {
+    name: "Ramesh Patil",
+    id: "FM-1029",
+    location: "Kolhapur",
+    phone: "919876543210",
+    instagram: "",
+    facebook: ""
+};
+
+let products = JSON.parse(localStorage.getItem("agriProducts")) || [];
+
+/* NAVIGATION STACK */
+function goToScreen(screenId, push = true) {
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     const target = document.getElementById("screen-" + screenId);
     if (target) {
         target.classList.add("active");
-        if (pushHistory && historyStack[historyStack.length - 1] !== screenId) {
+        if (push && historyStack[historyStack.length - 1] !== screenId) {
             historyStack.push(screenId);
         }
-        if (screenId === 'farmer-dashboard') populateFarmerDisplays();
-        if (screenId === 'farmer-profile') loadFarmerProfileInputs();
-        if (screenId === 'farmer-field-info') loadFarmerFieldInputs();
-        if (screenId === 'buyer-dashboard') {
-            populateBuyerDisplays();
-            renderBuyerProducts();
-        }
+        if (screenId === 'buyer-dashboard') renderMarketplace();
+        if (screenId === 'farmer-profile') loadProfileForm();
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function goBack() {
     if (historyStack.length > 1) {
-        historyStack.pop(); // remove current
-        const previousScreen = historyStack[historyStack.length - 1];
-        goToScreen(previousScreen, false);
+        historyStack.pop();
+        goToScreen(historyStack[historyStack.length - 1], false);
     } else {
         goToScreen('landing', false);
     }
 }
 
-/* FARMER ONBOARDING & PROFILES */
-function submitFarmerOnboarding(e) {
-    e.preventDefault();
-    farmerData.name = document.getElementById("onboard-farmer-name").value.trim();
-    farmerData.id = document.getElementById("onboard-farmer-id").value.trim();
-    farmerData.location = document.getElementById("onboard-farmer-loc").value.trim();
-    
-    saveFarmerData();
-    goToScreen('farmer-dashboard');
+/* LANGUAGE TOGGLE */
+function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'mr' : 'en';
+    document.querySelectorAll('[data-en]').forEach(el => {
+        el.textContent = el.getAttribute(`data-${currentLang}`);
+    });
 }
 
-function submitBuyerOnboarding(e) {
-    e.preventDefault();
-    buyerData.name = document.getElementById("onboard-buyer-name").value.trim();
-    buyerData.location = document.getElementById("onboard-buyer-loc").value.trim();
-    
-    localStorage.setItem("agriBuyerProfile", JSON.stringify(buyerData));
-    goToScreen('buyer-dashboard');
-}
-
-function populateFarmerDisplays() {
-    document.querySelectorAll('.farmer-display-name').forEach(el => el.textContent = farmerData.name);
-    document.getElementById('farmer-id-display').textContent = farmerData.id;
-    document.getElementById('farmer-loc-display').textContent = farmerData.location;
-    const locInput = document.getElementById('farmerLocationInput');
-    if (locInput) locInput.value = farmerData.location;
-}
-
-function populateBuyerDisplays() {
-    document.querySelectorAll('.buyer-display-name').forEach(el => el.textContent = buyerData.name);
-    document.getElementById('buyer-loc-display').textContent = buyerData.location;
-}
-
-function loadFarmerProfileInputs() {
-    document.getElementById('profile-name').value = farmerData.name || '';
-    document.getElementById('profile-id').value = farmerData.id || '';
-    document.getElementById('profile-location').value = farmerData.location || '';
-    document.getElementById('profile-phone').value = farmerData.phone || '';
-    document.getElementById('profile-instagram').value = farmerData.instagram || '';
-    document.getElementById('profile-facebook').value = farmerData.facebook || '';
+/* FARMER PROFILE */
+function loadProfileForm() {
+    document.getElementById('prof-name').value = farmerProfile.name;
+    document.getElementById('prof-id').value = farmerProfile.id;
+    document.getElementById('prof-loc').value = farmerProfile.location;
+    document.getElementById('prof-phone').value = farmerProfile.phone;
+    document.getElementById('prof-insta').value = farmerProfile.instagram || '';
+    document.getElementById('prof-fb').value = farmerProfile.facebook || '';
 }
 
 function saveFarmerProfile(e) {
     e.preventDefault();
-    farmerData.name = document.getElementById('profile-name').value.trim();
-    farmerData.id = document.getElementById('profile-id').value.trim();
-    farmerData.location = document.getElementById('profile-location').value.trim();
-    farmerData.phone = document.getElementById('profile-phone').value.trim();
-    farmerData.instagram = document.getElementById('profile-instagram').value.trim();
-    farmerData.facebook = document.getElementById('profile-facebook').value.trim();
+    farmerProfile.name = document.getElementById('prof-name').value.trim();
+    farmerProfile.id = document.getElementById('prof-id').value.trim();
+    farmerProfile.location = document.getElementById('prof-loc').value.trim();
+    farmerProfile.phone = document.getElementById('prof-phone').value.trim().replace(/[^0-9]/g, '');
+    farmerProfile.instagram = document.getElementById('prof-insta').value.trim();
+    farmerProfile.facebook = document.getElementById('prof-fb').value.trim();
 
-    saveFarmerData();
-    alert("✅ Farmer profile and social links updated successfully!");
+    localStorage.setItem("agriFarmer", JSON.stringify(farmerProfile));
+    alert(currentLang === 'mr' ? '✅ प्रोफाइल यशस्वीरित्या सेव्ह झाली!' : '✅ Profile saved successfully!');
     goBack();
 }
 
-function loadFarmerFieldInputs() {
-    document.getElementById('field-size').value = farmerData.fieldSize || '';
-    document.getElementById('field-soil').value = farmerData.soilType || '';
-    document.getElementById('field-active-crops').value = farmerData.activeCrops || '';
-    document.getElementById('field-irrigation').value = farmerData.irrigation || '';
-    document.getElementById('field-notes').value = farmerData.notes || '';
-}
-
-function saveFarmerFieldInfo(e) {
+function saveFieldInfo(e) {
     e.preventDefault();
-    farmerData.fieldSize = document.getElementById('field-size').value.trim();
-    farmerData.soilType = document.getElementById('field-soil').value.trim();
-    farmerData.activeCrops = document.getElementById('field-active-crops').value.trim();
-    farmerData.irrigation = document.getElementById('field-irrigation').value.trim();
-    farmerData.notes = document.getElementById('field-notes').value.trim();
-
-    saveFarmerData();
-    alert("✅ Field and crop information saved successfully!");
+    alert(currentLang === 'mr' ? '✅ शेती माहिती सेव्ह झाली!' : '✅ Field information saved successfully!');
     goBack();
 }
 
-function saveFarmerData() {
-    localStorage.setItem("agriFarmerProfile", JSON.stringify(farmerData));
-}
-
-/* MARKETPLACE & PRODUCTS */
-function getProducts() {
-    const saved = localStorage.getItem("agriProducts");
-    if (saved) return JSON.parse(saved);
-    localStorage.setItem("agriProducts", JSON.stringify(defaultProducts));
-    return defaultProducts;
-}
-
-function saveProducts(products) {
-    localStorage.setItem("agriProducts", JSON.stringify(products));
-}
-
-function addProduct(e) {
+/* MARKETPLACE & WHATSAPP REDIRECT */
+function publishProduct(e) {
     e.preventDefault();
-    const products = getProducts();
-    
     const newProd = {
         id: Date.now(),
-        name: document.getElementById("productName").value.trim(),
-        category: document.getElementById("productCategory").value,
-        price: Number(document.getElementById("productPrice").value),
-        quantity: Number(document.getElementById("productQuantity").value),
-        farmer: farmerData.name,
-        location: document.getElementById("farmerLocationInput").value.trim() || farmerData.location,
-        emoji: document.getElementById("productEmoji").value
+        name: document.getElementById('p-name').value.trim(),
+        category: document.getElementById('p-cat').value,
+        emoji: document.getElementById('p-emoji').value,
+        price: Number(document.getElementById('p-price').value),
+        qty: Number(document.getElementById('p-qty').value),
+        farmer: farmerProfile.name,
+        location: farmerProfile.location,
+        phone: farmerProfile.phone
     };
 
     products.push(newProd);
-    saveProducts(products);
-    alert("✅ Product published successfully to marketplace!");
+    localStorage.setItem("agriProducts", JSON.stringify(products));
+    alert(currentLang === 'mr' ? '✅ उत्पादन बाजारपेठेत जोडले गेले!' : '✅ Product successfully published to marketplace!');
     e.target.reset();
-    goBack();
+    goToScreen('buyer-dashboard');
 }
 
-function renderBuyerProducts() {
-    const container = document.getElementById("buyerProductGrid");
-    if (!container) return;
+function renderMarketplace() {
+    const grid = document.getElementById('marketplaceGrid');
+    const search = (document.getElementById('searchProd')?.value || "").toLowerCase();
 
-    const search = (document.getElementById("buyerSearchInput")?.value || "").toLowerCase();
-    const category = document.getElementById("buyerCategoryFilter")?.value || "all";
+    const filtered = products.filter(p => 
+        p.name.toLowerCase().includes(search) || 
+        p.location.toLowerCase().includes(search) || 
+        p.farmer.toLowerCase().includes(search)
+    );
 
-    let products = getProducts();
-
-    products = products.filter(p => {
-        const matchesSearch = p.name.toLowerCase().includes(search) || 
-                              p.farmer.toLowerCase().includes(search) || 
-                              p.location.toLowerCase().includes(search);
-        const matchesCat = category === "all" || p.category === category;
-        return matchesSearch && matchesCat;
-    });
-
-    if (products.length === 0) {
-        container.innerHTML = `<div class="col-span-full card text-center py-8 text-gray-500">No produce found matching your search.</div>`;
+    if (filtered.length === 0) {
+        grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-400 card-custom"><p>${currentLang === 'mr' ? 'अद्याप कोणतेही उत्पादन जोडलेले नाही. शेतकरी पोर्टलवरून पिके जोडा.' : 'No products listed yet. Add produce from the Farmer Portal.'}</p></div>`;
         return;
     }
 
-    container.innerHTML = products.map(p => `
-        <div class="card flex flex-col justify-between">
+    grid.innerHTML = filtered.map(p => `
+        <div class="card-custom p-5 flex flex-col justify-between">
             <div>
-                <div class="h-32 bg-green-50 rounded-xl flex items-center justify-center text-6xl mb-3">${p.emoji}</div>
-                <div class="text-xs font-bold text-green-700 uppercase tracking-wide">${p.category}</div>
-                <h3 class="font-bold text-lg text-farm-dark mt-1">${p.name}</h3>
-                <p class="text-xs text-gray-500 mt-1">👨‍🌾 ${p.farmer} • 📍 ${p.location}</p>
-                <div class="mt-3 flex justify-between items-baseline">
-                    <span class="text-xl font-bold text-green-800">₹${p.price}<span class="text-xs text-gray-500">/kg</span></span>
-                    <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-md">${p.quantity} kg available</span>
+                <div class="h-28 bg-[#0a1f12] rounded-xl flex items-center justify-center text-5xl mb-3 border border-green-900">${p.emoji}</div>
+                <span class="text-[10px] bg-green-900 text-green-300 px-2.5 py-0.5 rounded-full font-bold uppercase">${p.category}</span>
+                <h3 class="font-bold text-lg text-white mt-2">${p.name}</h3>
+                <p class="text-xs text-gray-400 mt-1">👨‍🌾 ${p.farmer} • 📍 ${p.location}</p>
+                <div class="mt-4 flex justify-between items-baseline">
+                    <span class="text-xl font-extrabold text-amber-400">₹${p.price}<span class="text-xs text-gray-400">/kg</span></span>
+                    <span class="text-xs text-gray-300 bg-green-950 px-2 py-1 rounded-md border border-green-900">${p.qty} kg</span>
                 </div>
             </div>
-            <button onclick="addToCart(${p.id})" class="btn-primary w-full mt-4 text-sm">
-                🛒 Add to Order
-            </button>
+            <a href="https://wa.me/${p.phone || '919876543210'}?text=${encodeURIComponent('Hello ' + p.farmer + ', I want to buy your ' + p.name + ' (' + p.qty + 'kg available at ₹' + p.price + '/kg) listed on AgriConnect.')}" target="_blank" class="mt-5 bg-emerald-600 hover:bg-emerald-700 text-white text-center font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg">
+                💬 <span data-en="Buy on WhatsApp" data-mr="WhatsApp वर खरेदी करा">Buy on WhatsApp</span>
+            </a>
         </div>
     `).join('');
 }
 
-/* SHOPPING CART */
-function addToCart(productId) {
-    const products = getProducts();
-    const prod = products.find(p => p.id === productId);
-    if (!prod) return;
-
-    const existing = cart.find(c => c.id === productId);
-    if (existing) {
-        existing.qty += 1;
-    } else {
-        cart.push({ ...prod, qty: 1 });
-    }
-
-    updateCartUI();
-    alert(`Added 1kg of ${prod.name} to cart!`);
-}
-
-function updateCartUI() {
-    document.getElementById('cart-count').textContent = cart.reduce((acc, item) => acc + item.qty, 0);
-    
-    const cartList = document.getElementById('cartItemsList');
-    if (cart.length === 0) {
-        cartList.innerHTML = `<p class="text-center text-gray-400 py-4">Your cart is empty.</p>`;
-    } else {
-        cartList.innerHTML = cart.map(item => `
-            <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg text-sm">
-                <div>
-                    <div class="font-bold">${item.emoji} ${item.name}</div>
-                    <div class="text-xs text-gray-500">₹${item.price} x ${item.qty} kg</div>
-                </div>
-                <div class="font-bold text-green-700">₹${item.price * item.qty}</div>
-            </div>
-        `).join('');
-    }
-
-    const total = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-    document.getElementById('cartTotal').textContent = `₹${total}`;
-}
-
-function toggleCartModal() {
-    const modal = document.getElementById('cartModal');
-    modal.classList.toggle('hidden');
-    updateCartUI();
-}
-
-function checkoutCart() {
-    if (cart.length === 0) {
-        alert("Your cart is empty!");
-        return;
-    }
-    alert("🎉 Order successfully placed! Local farmers have been notified of your delivery request.");
-    cart = [];
-    updateCartUI();
-    toggleCartModal();
-}
-
 /* PROFIT CALCULATOR */
 function calculateProfit() {
-    const cost = Number(document.getElementById("costInput").value);
-    const revenue = Number(document.getElementById("revenueInput").value);
-    const profit = revenue - cost;
-    const margin = revenue > 0 ? ((profit / revenue) * 100).toFixed(1) : 0;
+    const cost = Number(document.getElementById('calc-cost').value);
+    const rev = Number(document.getElementById('calc-rev').value);
+    const profit = rev - cost;
+    const margin = rev > 0 ? ((profit / rev) * 100).toFixed(1) : 0;
 
-    const res = document.getElementById("profitResult");
-    const text = document.getElementById("profitText");
-
-    res.classList.remove("hidden");
-    text.innerHTML = `
-        💵 <b>Expected Revenue:</b> ₹${revenue.toLocaleString()}<br>
-        💸 <b>Total Cost:</b> ₹${cost.toLocaleString()}<br>
-        📈 <b>Estimated Profit:</b> <span class="${profit >= 0 ? 'text-green-700' : 'text-red-600'} font-bold">₹${profit.toLocaleString()}</span><br>
-        📊 <b>Profit Margin:</b> ${margin}%
+    const res = document.getElementById('calc-result');
+    res.classList.remove('hidden');
+    res.innerHTML = `
+        <b>📊 ${currentLang === 'mr' ? 'नफा अहवाल' : 'Profit Summary'}</b><br>
+        • ${currentLang === 'mr' ? 'एकूण उत्पन्न' : 'Revenue'}: ₹${rev.toLocaleString()}<br>
+        • ${currentLang === 'mr' ? 'एकूण खर्च' : 'Cost'}: ₹${cost.toLocaleString()}<br>
+        • ${currentLang === 'mr' ? 'शुद्ध नफा' : 'Net Profit'}: <span class="text-amber-400 font-bold">₹${profit.toLocaleString()}</span> (${margin}%)
     `;
 }
-
-/* CHATBOT */
-function toggleChat() {
-    document.getElementById('chatWindow').classList.toggle('open');
-}
-
-function sendMessage() {
-    const input = document.getElementById('chatInput');
-    const msg = input.value.trim();
-    if (!msg) return;
-
-    const messages = document.getElementById('chatMessages');
-    messages.innerHTML += `<div class="user-message">${msg}</div>`;
-    input.value = "";
-
-    setTimeout(() => {
-        let reply = "I am your smart agricultural assistant. Try asking about weather, crop pricing, or field care!";
-        const lower = msg.toLowerCase();
-        if (lower.includes('wheat') || lower.includes('rice')) {
-            reply = "Wheat & Rice grow best in well-drained soils with timely irrigation. Check your field info and weather tabs!";
-        } else if (lower.includes('profile') || lower.includes('social')) {
-            reply = "You can update your personal details, farmer ID, and social links anytime in the Farmer Profile section.";
-        }
-        messages.innerHTML += `<div class="bot-message">${reply}</div>`;
-        messages.scrollTop = messages.scrollHeight;
-    }, 600);
-}
-
-window.addEventListener("load", () => {
-    getProducts();
-});
 </script>
 
 </body>
