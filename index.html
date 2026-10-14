@@ -133,7 +133,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: #08160e; c
         <div class="card-custom p-6 mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <span class="bg-green-900 text-green-300 text-xs font-semibold px-3 py-1 rounded-full uppercase" data-en="Farmer Portal" data-mr="शेतकरी पोर्टल">Farmer Portal</span>
-                <h2 class="text-3xl font-bold text-white mt-2">👋 <span data-en="Welcome Farmer" data-mr="सुस्वागतम शेतकरी">Welcome Farmer</span></h2>
+                <h2 class="text-3xl font-bold text-white mt-2">👋 <span id="dash-farmer-name">Welcome Farmer</span></h2>
                 <p class="text-gray-300 text-sm mt-1"><span data-en="Manage your profile, field info, and list your crops below." data-mr="तुमची माहिती, शेतीचा तपशील आणि पिके खाली जोडा.">Manage your profile, field info, and list your crops below.</span></p>
             </div>
             <div class="flex flex-wrap gap-3">
@@ -408,6 +408,7 @@ function goToScreen(screenId, push = true) {
         }
         if (screenId === 'buyer-dashboard') renderMarketplace();
         if (screenId === 'farmer-profile') loadProfileForm();
+        if (screenId === 'farmer-dashboard') updateFarmerDisplay();
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -421,12 +422,18 @@ function goBack() {
     }
 }
 
+function updateFarmerDisplay() {
+    const el = document.getElementById('dash-farmer-name');
+    if (el) el.textContent = (currentLang === 'mr' ? 'सुस्वागतम ' : 'Welcome ') + farmerProfile.name;
+}
+
 /* LANGUAGE TOGGLE */
 function toggleLanguage() {
     currentLang = currentLang === 'en' ? 'mr' : 'en';
     document.querySelectorAll('[data-en]').forEach(el => {
         el.textContent = el.getAttribute(`data-${currentLang}`);
     });
+    updateFarmerDisplay();
 }
 
 /* FARMER PROFILE */
@@ -531,6 +538,10 @@ function calculateProfit() {
         • ${currentLang === 'mr' ? 'शुद्ध नफा' : 'Net Profit'}: <span class="text-amber-400 font-bold">₹${profit.toLocaleString()}</span> (${margin}%)
     `;
 }
+
+window.addEventListener("load", () => {
+    updateFarmerDisplay();
+});
 </script>
 
 </body>
